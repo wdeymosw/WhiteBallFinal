@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-using std::string; using std::cin;
+using namespace std;
 
 class Date {
 public:
@@ -19,7 +19,7 @@ public:
   bool DeleteEvent(const Date& date, const string& event);
   int  DeleteDate(const Date& date);
 
-  /* ??? */ Find(const Date& date) const;
+  /* ??? */ string Find(const Date& date) const;
   
   void Print() const;
 };
@@ -30,6 +30,11 @@ int main() {
   string command;
   while (getline(cin, command)) {
     // Считайте команды с потока ввода и обработайте каждую
+    string comm;
+    sstream i (command);
+    command >> comm;
+    
+    
   }
 
   return 0;
