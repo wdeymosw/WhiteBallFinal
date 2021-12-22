@@ -1,7 +1,7 @@
 // Реализуйте функции и методы классов и при необходимости добавьте свои
 #include <iostream>
 #include <map>
-#include <vector>
+#include <set>
 #include <string>
 
 using namespace std;
@@ -18,23 +18,43 @@ bool operator<(const Date& lhs, const Date& rhs);
 class Database {
 public:
   void AddEvent(const Date& date, const string& event){
-    dataBase[date].push_back(event);
+    dataBase[date].insert(event);
   }
 
-  bool DeleteEvent(const Date& date, const string& event);
+  bool DeleteEvent(const Date& date, const string& event){
+      auto findDate = dataBase.find(date);
+      bool ansver = false;
+      if (findDate != dataBase.end()){
+        auto events = findDate->second;
+        auto iter = events.find(event);
+        if (iter!= events.end())
+        {
+          dataBase[date].erase(iter);
+          ansver = true;
+        }
+
+      }
+      return ansver;
+
+    }
+
   int  DeleteDate(const Date& date){
     // delete events and date for key [date]
-    map <Date, vector<string>> :: iterator findDate;
-    findDate = dataBase.find(date);
-    dataBase.erase(findDate); 
-
+    auto findDate = dataBase.find(date);
+    int number = 0;
+    if (findDate != dataBase.end()) {
+      auto events = dataBase[date];
+      number = events.size();
+      dataBase.erase(findDate);       
+    }
+    return number; 
   }
 
   /* ??? */ string Find(const Date& date) const;
   
   void Print() const;
 private:
-  map <Date, vector<string>> dataBase;
+  map <Date, set<string>> dataBase;
 };
 
 
