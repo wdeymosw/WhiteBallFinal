@@ -18,19 +18,23 @@ bool operator<(const Date& lhs, const Date& rhs);
 class Database {
 public:
   void AddEvent(const Date& date, const string& event){
-    base[date].push_back(event);
+    dataBase[date].push_back(event);
   }
 
   bool DeleteEvent(const Date& date, const string& event);
   int  DeleteDate(const Date& date){
-    
+    // delete events and date for key [date]
+    map <Date, vector<string>> :: iterator findDate;
+    findDate = dataBase.find(date);
+    dataBase.erase(findDate); 
+
   }
 
   /* ??? */ string Find(const Date& date) const;
   
   void Print() const;
 private:
-  map <Date, vector<string>> base;
+  map <Date, vector<string>> dataBase;
 };
 
 
