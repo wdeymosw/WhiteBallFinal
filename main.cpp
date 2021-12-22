@@ -17,9 +17,14 @@ bool operator<(const Date& lhs, const Date& rhs);
 
 class Database {
 public:
-  void AddEvent(const Date& date, const string& event);
+  void AddEvent(const Date& date, const string& event){
+    base[date].push_back(event);
+  }
+
   bool DeleteEvent(const Date& date, const string& event);
-  int  DeleteDate(const Date& date);
+  int  DeleteDate(const Date& date){
+    
+  }
 
   /* ??? */ string Find(const Date& date) const;
   
