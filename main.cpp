@@ -5,15 +5,43 @@
 #include <string>
 
 using namespace std;
+const int lengthYear = 365;
+const int lengthMonth = 31;
 
 class Date {
 public:
-  int GetYear() const;
-  int GetMonth() const;
-  int GetDay() const;
+  int GetYear() const{
+    return year;
+  }
+  int GetMonth() const{
+    return month;
+  }
+  int GetDay() const{
+    return day;
+  }
+
+  void SetDate (int newYear, int newMonth, int newDay)
+  {
+    year = newYear;
+    month = newMonth;
+    day = newDay;
+  }
+
+
+private:
+  int year, month, day;
 };
 
-bool operator<(const Date& lhs, const Date& rhs);
+bool operator < (const Date& lhs, const Date& rhs){
+  int lResult = lhs.GetYear() * lengthYear + lhs.GetMonth() * lengthMonth + lhs.GetDay();
+  int rResult = rhs.GetYear() * lengthYear + rhs.GetMonth() * lengthMonth + rhs.GetDay();
+  if (lResult < rResult)
+  {
+    return true;
+  }
+  else return false;
+  
+}
 
 class Database {
 public:
