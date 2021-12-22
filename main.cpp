@@ -1,5 +1,7 @@
 // Реализуйте функции и методы классов и при необходимости добавьте свои
 #include <iostream>
+#include <map>
+#include <vector>
 #include <string>
 
 using namespace std;
@@ -22,7 +24,10 @@ public:
   /* ??? */ string Find(const Date& date) const;
   
   void Print() const;
+private:
+  map <Date, vector<string>> base;
 };
+
 
 int main() {
   Database db;
@@ -30,9 +35,6 @@ int main() {
   string command;
   while (getline(cin, command)) {
     // Считайте команды с потока ввода и обработайте каждую
-    string comm;
-    sstream i (command);
-    command >> comm;
     
     
   }
