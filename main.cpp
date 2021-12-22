@@ -7,8 +7,8 @@
 #include <iomanip>
 
 using namespace std;
-const int lengthYear = 365;
-const int lengthMonth = 31;
+const int& lengthYear = 365;
+const int& lengthMonth = 31;
 
 class Date {
 public:
@@ -35,6 +35,7 @@ private:
 };
 
 bool operator < (const Date& lhs, const Date& rhs);
+istream& operator >> (istream&, Date&);
 
 class Database {
 public:
