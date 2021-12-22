@@ -3,6 +3,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <sstream>
 #include <iomanip>
 
 using namespace std;
@@ -33,16 +34,7 @@ private:
   int year, month, day;
 };
 
-bool operator < (const Date& lhs, const Date& rhs){
-  int lResult = lhs.GetYear() * lengthYear + lhs.GetMonth() * lengthMonth + lhs.GetDay();
-  int rResult = rhs.GetYear() * lengthYear + rhs.GetMonth() * lengthMonth + rhs.GetDay();
-  if (lResult < rResult)
-  {
-    return true;
-  }
-  else return false;
-  
-}
+bool operator < (const Date& lhs, const Date& rhs);
 
 class Database {
 public:
@@ -110,12 +102,13 @@ public:
       cout << endl;
     }
 
-
   }
 
 private:
   map <Date, set<string>> dataBase;
 };
+
+istream& operator >> (istream&, Database&);
 
 
 int main() {
@@ -123,10 +116,40 @@ int main() {
     
   string command;
   while (getline(cin, command)) {
-    // Считайте команды с потока ввода и обработайте каждую
-    
+    // Считайте команды с потока ввода и обработайте каждую 
+  
+  string query, data, event;
+
+  istringstream stream(command);
+  stream >> query;
+
+  if (query == "Add")
+    {
+      stream >> data >> event;
+    }
+  if (query == "Del")
+    {
+      stream >> data >> event;
+    }
+  if (query == "Find")
+  {
+     stream >> data;
+  }
+  if (command == "Print"){}
+
     
   }
 
   return 0;
+}
+
+bool operator < (const Date& lhs, const Date& rhs){
+  int lResult = lhs.GetYear() * lengthYear + lhs.GetMonth() * lengthMonth + lhs.GetDay();
+  int rResult = rhs.GetYear() * lengthYear + rhs.GetMonth() * lengthMonth + rhs.GetDay();
+  if (lResult < rResult)
+  {
+    return true;
+  }
+  else return false;
+  
 }
