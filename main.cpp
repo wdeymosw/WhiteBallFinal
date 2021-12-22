@@ -3,6 +3,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <iomanip>
 
 using namespace std;
 const int lengthYear = 365;
@@ -78,9 +79,40 @@ public:
     return number; 
   }
 
-  /* ??? */ string Find(const Date& date) const;
+  /* ??? */ 
+  string Find(const Date& date) const{
+    string result = "";
+    auto findDate = dataBase.find(date);
+    if (findDate != dataBase.end()){
+      auto events = findDate->second;
+      for (const auto& event : events){
+        result += event + " ";
+      }
+      result += "\n";
+
+    }
+    return result;
+
+  }
   
-  void Print() const;
+  void Print() const{
+
+    for (const auto& date : dataBase)
+    {
+      const auto& data = date.first;
+      const auto& events = date.second;
+      cout << setfill('0') << setw(4) << data.GetYear() <<"-" 
+          << setw(2) << data.GetMonth() << "-" 
+          << setw(2) << data.GetDay();
+      for (auto& event: events){
+        cout << " " << event;
+      }
+      cout << endl;
+    }
+
+
+  }
+
 private:
   map <Date, set<string>> dataBase;
 };
