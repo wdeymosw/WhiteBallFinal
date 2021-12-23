@@ -12,6 +12,35 @@ const int& lengthMonth = 31;
 
 class Date {
 public:
+  Date (){
+    year = 1;
+    month = 1;
+    day = 1;
+  }
+
+  Date (int newYear, int newMonth, int newDay)
+  {
+    year = newYear;
+
+    if (newMonth <= 12 && newMonth >= 1){
+      month = newMonth;
+    }
+    else{
+      stringstream ss;
+      ss << "Month value is invalid: " << month;
+      throw runtime_error(ss.str());
+    }
+    if (newDay <= 31 && newDay >= 1){
+      day = newDay;
+    }
+    else{
+      stringstream ss;
+      ss << "Day value is invalid: " << day;
+      throw runtime_error(ss.str());
+    }
+  }
+  
+  
   int GetYear() const{
     return year;
   }
@@ -166,12 +195,29 @@ bool operator < (const Date& lhs, const Date& rhs){
 
 istream& operator >> (istream& stream, Date& date) {
   int year, month, day;
-  char sumbol;
+  char sumbolOne, sumbolTwo;
 
   stream >> year;
-  if (stream.peek() != '/'){
-    throw exception("");
+  bool yearCorrect = (year <= 9999 && year >= 0);
+  stream >> sumbolOne;
+  bool sumboOnelCorrect = (sumbolOne == '-');
+  stream >> month;
+  bool monthCorrect = ( month <= 99 && month >= -99);
+  stream >> sumbolTwo;
+  bool sumbolTwoCorrect = (sumbolTwo == '-');
+  stream >> day;
+  bool dayCorrect = (day <= 99 && day >= - 99);
+
+  if (yearCorrect && sumboOnelCorrect && monthCorrect && sumbolTwoCorrect && dayCorrect){
+    date = {year, month, day};
   }
+  else {
+    stringstream ss;
+    ss << "Wrong date format: " << year << sumbolOne << month << sumbolTwo << day;
+    throw runtime_error(ss.str());
+  }
+  
+
 
 
 }
