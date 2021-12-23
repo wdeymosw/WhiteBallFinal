@@ -119,24 +119,33 @@ int main() {
   while (getline(cin, command)) {
     // Считайте команды с потока ввода и обработайте каждую 
   
-  string query, data, event;
+  string query, event;
+  Date date;
 
   istringstream stream(command);
   stream >> query;
-
+  try {
   if (query == "Add")
     {
-      stream >> data >> event;
+      stream >> date >> event;
     }
   if (query == "Del")
     {
-      stream >> data >> event;
+      stream >> date >> event;
     }
   if (query == "Find")
   {
-     stream >> data;
+     stream >> date;
   }
-  if (command == "Print"){}
+  if (command == "Print"){
+  }
+  else {
+    cout << "Unknown command: " << command;
+  }
+  }
+  catch (exception& ex) {
+      cout << ex.what();
+  }
 
     
   }
@@ -153,4 +162,16 @@ bool operator < (const Date& lhs, const Date& rhs){
   }
   else return false;
   
+}
+
+istream& operator >> (istream& stream, Date& date) {
+  int year, month, day;
+  char sumbol;
+
+  stream >> year;
+  if (stream.peek() != '/'){
+    throw exception("");
+  }
+
+
 }
