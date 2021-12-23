@@ -7,8 +7,10 @@
 #include <iomanip>
 
 using namespace std;
-const int& lengthYear = 365;
-const int& lengthMonth = 31;
+const int& LENGTH_YEAR = 365;
+const int& LENGTH_MONTH = 31;
+const int& COUNT_MONTH = 31;
+
 
 class Date {
 public:
@@ -22,7 +24,7 @@ public:
   {
     year = newYear;
 
-    if (newMonth <= 12 && newMonth >= 1){
+    if (newMonth <= COUNT_MONTH && newMonth >= true){
       month = newMonth;
     }
     else{
@@ -30,7 +32,7 @@ public:
       ss << "Month value is invalid: " << month;
       throw runtime_error(ss.str());
     }
-    if (newDay <= 31 && newDay >= 1){
+    if (newDay <= LENGTH_MONTH && newDay >= true){
       day = newDay;
     }
     else{
@@ -183,8 +185,8 @@ int main() {
 }
 
 bool operator < (const Date& lhs, const Date& rhs){
-  int lResult = lhs.GetYear() * lengthYear + lhs.GetMonth() * lengthMonth + lhs.GetDay();
-  int rResult = rhs.GetYear() * lengthYear + rhs.GetMonth() * lengthMonth + rhs.GetDay();
+  int lResult = lhs.GetYear() * LENGTH_YEAR + lhs.GetMonth() * LENGTH_MONTH + lhs.GetDay();
+  int rResult = rhs.GetYear() * LENGTH_YEAR + rhs.GetMonth() * LENGTH_MONTH + rhs.GetDay();
   if (lResult < rResult)
   {
     return true;
@@ -198,7 +200,7 @@ istream& operator >> (istream& stream, Date& date) {
   char sumbolOne, sumbolTwo;
 
   stream >> year;
-  bool yearCorrect = (year <= 9999 && year >= 0);
+  bool yearCorrect = (year <= 9999 && year >= false);
   stream >> sumbolOne;
   bool sumboOnelCorrect = (sumbolOne == '-');
   stream >> month;
