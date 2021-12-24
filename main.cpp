@@ -9,7 +9,7 @@
 using namespace std;
 const int& LENGTH_YEAR = 365;
 const int& LENGTH_MONTH = 31;
-const int& COUNT_MONTH = 31;
+const int& COUNT_MONTH = 12;
 
 
 class Date {
