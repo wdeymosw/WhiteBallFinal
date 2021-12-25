@@ -10,14 +10,17 @@ using namespace std;
 const int& LENGTH_YEAR = 365;
 const int& LENGTH_MONTH = 31;
 const int& COUNT_MONTH = 12;
+const int& ONE = 1;
+const int& XX = 99;
+const int& XXXX = 9999;
 
 
 class Date {
 public:
   Date (){
-    year = 1;
-    month = 1;
-    day = 1;
+    year = ONE;
+    month = ONE;
+    day = ONE;
   }
 
   Date (int newYear, int newMonth, int newDay)
@@ -32,7 +35,7 @@ public:
       ss << "Month value is invalid: " << month;
       throw runtime_error(ss.str());
     }
-    if (newDay <= LENGTH_MONTH && newDay >= true){
+    if (newDay <= LENGTH_MONTH && newDay >= ONE){
       day = newDay;
     }
     else{
@@ -113,14 +116,11 @@ public:
         result += event + " ";
       }
       result += "\n";
-
     }
     return result;
-
   }
   
   void Print() const{
-
     for (const auto& date : dataBase)
     {
       const auto& data = date.first;
@@ -133,7 +133,6 @@ public:
       }
       cout << endl;
     }
-
   }
 
 private:
@@ -141,7 +140,6 @@ private:
 };
 
 istream& operator >> (istream&, Database&);
-
 
 int main() {
   Database db;
@@ -154,30 +152,40 @@ int main() {
   Date date;
 
   istringstream stream(command);
-  stream >> query;
-  try {
-  if (query == "Add")
-    {
-      stream >> date >> event;
-    }
-  if (query == "Del")
-    {
-      stream >> date >> event;
-    }
-  if (query == "Find")
-  {
-     stream >> date;
-  }
-  if (command == "Print"){
-  }
-  else {
-    cout << "Unknown command: " << command;
-  }
-  }
-  catch (exception& ex) {
-      cout << ex.what();
-  }
+  if (stream >> query){
+    try {
 
+      if (query == "Add"){
+        bool correct = (stream >> date && stream >> event);
+        if (correct){
+          db.AddEvent(date, event);
+        }
+      }
+      if (query == "Del"){
+        if (stream >> date){
+          if (stream >> event){
+            if (db.DeleteEvent(date, event)){
+              cout << "Deleted successfully\n";
+            }
+            else {cout << "Event not found\n";}
+          }
+          else{ cout << "Deleted " << db.DeleteDate(date) << " events\n"; }
+        }
+      }
+      if (query == "Find"){
+        if (stream >> date){db.Find(date);}
+      }
+      if (command == "Print"){
+        db.Print();
+      }
+      else { cout << "Unknown command: " << command;}
+  }
+    catch (exception& ex) {
+      cout << ex.what();
+    }
+
+
+  }
     
   }
 
@@ -200,26 +208,26 @@ istream& operator >> (istream& stream, Date& date) {
   char sumbolOne, sumbolTwo;
 
   stream >> year;
-  bool yearCorrect = (year <= 9999 && year >= false);
+  bool yearCorrect = (year <= XXXX && year >= ONE);
   stream >> sumbolOne;
   bool sumboOnelCorrect = (sumbolOne == '-');
   stream >> month;
-  bool monthCorrect = ( month <= 99 && month >= -99);
+  bool monthCorrect = ( month <= XX && month >= -XX);
   stream >> sumbolTwo;
   bool sumbolTwoCorrect = (sumbolTwo == '-');
   stream >> day;
-  bool dayCorrect = (day <= 99 && day >= - 99);
+  bool dayCorrect = (day <= XX && day >= -XX);
 
   if (yearCorrect && sumboOnelCorrect && monthCorrect && sumbolTwoCorrect && dayCorrect){
     date = {year, month, day};
   }
   else {
     stringstream ss;
-    ss << "Wrong date format: " << year << sumbolOne << month << sumbolTwo << day;
+    ss << "Wrong date format: " << year << sumbolOne << month << sumbolTwo << day << endl;
     throw runtime_error(ss.str());
   }
+
+  return stream;
+}
   
 
-
-
-}
