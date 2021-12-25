@@ -27,21 +27,21 @@ public:
   {
     year = newYear;
 
-    if (newMonth <= COUNT_MONTH && newMonth >= true){
+    if (newMonth <= COUNT_MONTH && newMonth >= ONE){
       month = newMonth;
     }
     else{
       stringstream ss;
-      ss << "Month value is invalid: " << month;
-      throw runtime_error(ss.str());
+      ss << "Month value is invalid: " << newMonth << "\n";
+      throw range_error(ss.str());
     }
     if (newDay <= LENGTH_MONTH && newDay >= ONE){
       day = newDay;
     }
     else{
       stringstream ss;
-      ss << "Day value is invalid: " << day;
-      throw runtime_error(ss.str());
+      ss << "Day value is invalid: " << newDay << "\n";
+      throw range_error(ss.str());
     }
   }
   
@@ -86,6 +86,8 @@ public:
         if (iter!= events.end())
         {
           dataBase[date].erase(iter);
+          // erase works incorrectly 
+          // to do: chack it
           ansver = true;
         }
 
@@ -161,7 +163,7 @@ int main() {
           db.AddEvent(date, event);
         }
       }
-      if (query == "Del"){
+      else if (query == "Del"){
         if (stream >> date){
           if (stream >> event){
             if (db.DeleteEvent(date, event)){
@@ -172,13 +174,13 @@ int main() {
           else{ cout << "Deleted " << db.DeleteDate(date) << " events\n"; }
         }
       }
-      if (query == "Find"){
+      else if (query == "Find"){
         if (stream >> date){db.Find(date);}
       }
-      if (command == "Print"){
+      else if (command == "Print"){
         db.Print();
       }
-      else { cout << "Unknown command: " << command;}
+      else { cout << "Unknown command: " << query << "\n"; }
   }
     catch (exception& ex) {
       cout << ex.what();
@@ -208,7 +210,7 @@ istream& operator >> (istream& stream, Date& date) {
   char sumbolOne, sumbolTwo;
 
   stream >> year;
-  bool yearCorrect = (year <= XXXX && year >= ONE);
+  bool yearCorrect = (year <= XXXX && year >= 0);
   stream >> sumbolOne;
   bool sumboOnelCorrect = (sumbolOne == '-');
   stream >> month;
