@@ -113,11 +113,9 @@ public:
     if (findDate != dataBase.end()){
       auto events = findDate->second;
       vector <string> eventList;
-
       for (const auto& event : events){
         eventList.push_back(event);
       }
-
       for (int i = 0; i <= eventList.size()-1; ++ i)
       {
         result += eventList[i] +((i < eventList.size()-1)?" ":"\n");
@@ -212,26 +210,32 @@ bool operator < (const Date& lhs, const Date& rhs){
 }
 
 istream& operator >> (istream& stream, Date& date) {
+  
+  string dataString;
+  stream >> dataString;
+  istringstream ss(dataString);
+  
   int year, month, day;
   char sumbolOne, sumbolTwo;
 
-  stream >> year;
+  ss >> year;
   bool yearCorrect = (year <= XXXX && year >= 0);
-  stream >> sumbolOne;
+  ss >> sumbolOne;
   bool sumboOnelCorrect = (sumbolOne == '-');
-  stream >> month;
+  ss >> month;
   bool monthCorrect = ( month <= XX && month >= -XX);
-  stream >> sumbolTwo;
+  ss >> sumbolTwo;
   bool sumbolTwoCorrect = (sumbolTwo == '-');
-  stream >> day;
+  ss >> day;
   bool dayCorrect = (day <= XX && day >= -XX);
 
-  if (yearCorrect && sumboOnelCorrect && monthCorrect && sumbolTwoCorrect && dayCorrect){
+
+  if (yearCorrect && sumboOnelCorrect && monthCorrect && sumbolTwoCorrect && dayCorrect && ss.peek() == EOF){
     date = {year, month, day};
   }
   else {
     stringstream ss;
-    ss << "Wrong date format: " << year << sumbolOne << month << sumbolTwo << day << endl;
+    ss << "Wrong date format: " << dataString << endl;
     throw runtime_error(ss.str());
   }
 
