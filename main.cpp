@@ -85,7 +85,7 @@ public:
         auto iter = events.find(event);
         if (iter!= events.end())
         {
-          dataBase[date].erase(iter);
+          dataBase.at(date).erase(event);
           // erase works incorrectly 
           // to do: chack it
           ansver = true;
