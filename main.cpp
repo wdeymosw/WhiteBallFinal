@@ -175,7 +175,7 @@ int main() {
         }
       }
       else if (query == "Find"){
-        if (stream >> date){db.Find(date);}
+        if (stream >> date){cout << db.Find(date);}
       }
       else if (command == "Print"){
         db.Print();
@@ -184,6 +184,7 @@ int main() {
   }
     catch (exception& ex) {
       cout << ex.what();
+      break;
     }
 
 
