@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 #include <set>
+#include <vector>
 #include <string>
 #include <sstream>
 #include <iomanip>
@@ -86,8 +87,6 @@ public:
         if (iter!= events.end())
         {
           dataBase.at(date).erase(event);
-          // erase works incorrectly 
-          // to do: chack it
           ansver = true;
         }
 
@@ -108,16 +107,22 @@ public:
     return number; 
   }
 
-  /* ??? */ 
   string Find(const Date& date) const{
     string result = "";
     auto findDate = dataBase.find(date);
     if (findDate != dataBase.end()){
       auto events = findDate->second;
+      vector <string> eventList;
+
       for (const auto& event : events){
-        result += event + " ";
+        eventList.push_back(event);
       }
-      result += "\n";
+
+      for (int i = 0; i <= eventList.size()-1; ++ i)
+      {
+        result += eventList[i] +((i < eventList.size()-1)?" ":"\n");
+      }
+      
     }
     return result;
   }
