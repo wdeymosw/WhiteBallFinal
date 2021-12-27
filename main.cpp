@@ -87,6 +87,11 @@ public:
         if (iter!= events.end())
         {
           dataBase.at(date).erase(event);
+          events = dataBase[date];
+          if (events.size() == 0){
+            DeleteDate(date);
+          }
+          // to do если дата пустая то удалить и саму дату
           ansver = true;
         }
 
