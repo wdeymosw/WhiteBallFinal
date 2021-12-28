@@ -8,17 +8,20 @@
 #include <iomanip>
 
 using namespace std;
+
 const int& LENGTH_YEAR = 365;
 const int& LENGTH_MONTH = 31;
 const int& COUNT_MONTH = 12;
 const int& ONE = 1;
-const int& XX = 99;
-const int& XXXX = 9999;
+
+
 
 
 class Date {
 public:
-  Date (){
+
+  Date()
+  {
     year = ONE;
     month = ONE;
     day = ONE;
@@ -26,24 +29,21 @@ public:
 
   Date (int newYear, int newMonth, int newDay)
   {
-    year = newYear;
 
-    if (newMonth <= COUNT_MONTH && newMonth >= ONE){
-      month = newMonth;
-    }
-    else{
+    if (newMonth > COUNT_MONTH && newMonth < ONE){
       stringstream ss;
       ss << "Month value is invalid: " << newMonth << "\n";
       throw range_error(ss.str());
     }
-    if (newDay <= LENGTH_MONTH && newDay >= ONE){
-      day = newDay;
-    }
-    else{
+    else if (newDay > LENGTH_MONTH && newDay < ONE) {
       stringstream ss;
       ss << "Day value is invalid: " << newDay << "\n";
       throw range_error(ss.str());
     }
+    year = newYear;
+    month = newMonth;
+    day = newDay;
+    
   }
   
   
@@ -57,12 +57,7 @@ public:
     return day;
   }
 
-  void SetDate (int newYear, int newMonth, int newDay)
-  {
-    year = newYear;
-    month = newMonth;
-    day = newDay;
-  }
+
 
 
 private:
@@ -71,6 +66,7 @@ private:
 
 bool operator < (const Date& lhs, const Date& rhs);
 istream& operator >> (istream&, Date&);
+ostream& operator << (ostream&, const Date&);
 
 class Database {
 public:
@@ -91,7 +87,6 @@ public:
           if (events.size() == 0){
             DeleteDate(date);
           }
-          // to do если дата пустая то удалить и саму дату
           ansver = true;
         }
 
@@ -117,14 +112,7 @@ public:
     auto findDate = dataBase.find(date);
     if (findDate != dataBase.end()){
       auto events = findDate->second;
-      /*vector <string> eventList;
-      for (const auto& event : events){
-        eventList.push_back(event);
-      }
-      for (int i = 0; i <= eventList.size()-1; ++ i)
-      {
-        result += eventList[i] +((i < eventList.size()-1)?" ":"\n");
-      }*/
+     
       for (auto& event : events)
       {
         cout << event << "\n";
@@ -137,14 +125,9 @@ public:
   void Print() const{
     for (const auto& date : dataBase)
     {
-      const auto& data = date.first;
-      const auto& events = date.second;
-      stringstream ss;
-      ss << setfill('0') << setw(4) << data.GetYear() <<"-" 
-          << setw(2) << data.GetMonth() << "-" 
-          << setw(2) << data.GetDay();
-      for (auto& event: events){
-        cout << ss.str() << " " << event << "\n";
+      
+      for (auto& event: date.second){
+        cout << date.first << " " << event << "\n";
       }
       cout << endl;
     }
@@ -154,7 +137,6 @@ private:
   map <Date, set<string>> dataBase;
 };
 
-istream& operator >> (istream&, Database&);
 
 int main() {
   Database db;
@@ -193,7 +175,10 @@ int main() {
       else if (command == "Print"){
         db.Print();
       }
-      else { cout << "Unknown command: " << query << "\n"; }
+      else {
+        stringstream ss;
+        ss << "Unknown command: " << query << "\n"<< endl;
+        throw runtime_error(ss.str());}
   }
     catch (exception& ex) {
       cout << ex.what();
@@ -226,21 +211,20 @@ istream& operator >> (istream& stream, Date& date) {
   istringstream ss(dataString);
   
   int year, month, day;
-  char sumbolOne, sumbolTwo;
+  bool correct = true;
 
-  ss >> year;
-  bool yearCorrect = (year <= XXXX && year >= 0);
-  ss >> sumbolOne;
-  bool sumboOnelCorrect = (sumbolOne == '-');
-  ss >> month;
-  bool monthCorrect = ( month <= XX && month >= -XX);
-  ss >> sumbolTwo;
-  bool sumbolTwoCorrect = (sumbolTwo == '-');
-  ss >> day;
-  bool dayCorrect = (day <= XX && day >= -XX);
+  correct = correct && (ss >> year);
+  correct = correct && (ss.peek() == '-');
+  ss.ignore(1);
+  correct = correct && (ss >> month);
+   correct = correct && (ss.peek() == '-');
+  ss.ignore(1);
+  correct = correct && (ss >> day);
+  correct = correct && (ss.eof());
 
 
-  if (yearCorrect && sumboOnelCorrect && monthCorrect && sumbolTwoCorrect && dayCorrect && ss.peek() == EOF){
+
+  if (correct){
     date = {year, month, day};
   }
   else {
@@ -251,5 +235,13 @@ istream& operator >> (istream& stream, Date& date) {
 
   return stream;
 }
+
+ostream& operator << (ostream& stream,const Date& date)  {
+      stream << setfill('0') << setw(4) << date.GetYear() <<"-";
+      stream << setfill('0') << setw(2) << date.GetMonth() << "-";
+      stream << setfill('0') << setw(2) << date.GetDay();
+  return stream;
+}
+
   
 
