@@ -117,13 +117,17 @@ public:
     auto findDate = dataBase.find(date);
     if (findDate != dataBase.end()){
       auto events = findDate->second;
-      vector <string> eventList;
+      /*vector <string> eventList;
       for (const auto& event : events){
         eventList.push_back(event);
       }
       for (int i = 0; i <= eventList.size()-1; ++ i)
       {
         result += eventList[i] +((i < eventList.size()-1)?" ":"\n");
+      }*/
+      for (auto& event : events)
+      {
+        cout << event << "\n";
       }
       
     }
@@ -135,11 +139,12 @@ public:
     {
       const auto& data = date.first;
       const auto& events = date.second;
-      cout << setfill('0') << setw(4) << data.GetYear() <<"-" 
+      stringstream ss;
+      ss << setfill('0') << setw(4) << data.GetYear() <<"-" 
           << setw(2) << data.GetMonth() << "-" 
           << setw(2) << data.GetDay();
       for (auto& event: events){
-        cout << " " << event;
+        cout << ss.str() << " " << event << "\n";
       }
       cout << endl;
     }
