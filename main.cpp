@@ -30,12 +30,12 @@ public:
   Date (int newYear, int newMonth, int newDay)
   {
 
-    if (newMonth > COUNT_MONTH && newMonth < ONE){
+    if (newMonth > COUNT_MONTH || newMonth < ONE){
       stringstream ss;
       ss << "Month value is invalid: " << newMonth << "\n";
       throw range_error(ss.str());
     }
-    else if (newDay > LENGTH_MONTH && newDay < ONE) {
+    else if (newDay > LENGTH_MONTH || newDay < ONE) {
       stringstream ss;
       ss << "Day value is invalid: " << newDay << "\n";
       throw range_error(ss.str());
